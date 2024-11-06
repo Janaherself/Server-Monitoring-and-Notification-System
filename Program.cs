@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
+using ServerMonitoringAndNotificationSystem.RabbitMQ;
+using ServerMonitoringAndNotificationSystem.ServerStatistics;
 
 namespace ServerMonitoringAndNotificationSystem
 {
