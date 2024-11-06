@@ -1,4 +1,4 @@
-﻿namespace ServerMonitoringAndNotificationSystem
+﻿namespace ServerMonitoringAndNotificationSystem.Interfaces
 {
     public interface IMessageQueue
     {

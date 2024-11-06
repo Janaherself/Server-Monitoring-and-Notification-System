@@ -1,4 +1,4 @@
-﻿namespace ServerMonitoringAndNotificationSystem
+﻿namespace ServerMonitoringAndNotificationSystem.ServerStatistics
 {
     public class ServerStatistics
     {
