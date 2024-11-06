@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server Monitoring and Notification System", "Server Monitoring and Notification System.csproj", "{ED5DBC2D-8B7D-4239-985B-32CF17845C1F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerMonitoringAndNotificationSystem", "ServerMonitoringAndNotificationSystem.csproj", "{ED5DBC2D-8B7D-4239-985B-32CF17845C1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
