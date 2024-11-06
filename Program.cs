@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using ServerMonitoringAndNotificationSystem.RabbitMQ;
 using ServerMonitoringAndNotificationSystem.ServerStatistics;
+using System.Configuration;
 
 namespace ServerMonitoringAndNotificationSystem
 {
@@ -10,11 +11,12 @@ namespace ServerMonitoringAndNotificationSystem
         {
             var config = new ConfigurationBuilder().SetBasePath(Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\"))).AddJsonFile("appsettings.json").Build();
 
-            var messageQueue = new RabbitMQService();
-            var collector = new ServerStatisticsCollector(config, messageQueue);
+            var messageQueueService = new RabbitMQService();
+            var mongoDbService = new MongoDbService(config["MongoDbConnection:ConnectionString"], config["MongoDbConnection:DatabaseName"]);
+            var signalRNotifier = new SignalRNotifier(config["SignalRConfig:SignalRUrl"]);
 
-            var cts = new CancellationTokenSource();
-            await collector.StartAsync(cts.Token);
+            Console.WriteLine("Service running...");
+            await Task.Delay(Timeout.Infinite);
         }
     }
 }

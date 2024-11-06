@@ -5,10 +5,10 @@ public class MongoDbService : IMongoDbService
 {
     private readonly IMongoCollection<ServerStatistics> _statisticsCollection;
 
-    public MongoDbService(string connectionString)
+    public MongoDbService(string connectionString, string databaseName)
     {
         var client = new MongoClient(connectionString);
-        var database = client.GetDatabase("ServerStatsDB");
+        var database = client.GetDatabase(databaseName);
         _statisticsCollection = database.GetCollection<ServerStatistics>("ServerStatistics");
     }
 

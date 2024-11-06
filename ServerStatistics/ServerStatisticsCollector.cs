@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace ServerMonitoringAndNotificationSystem.ServerStatistics
 {
-    public class ServerStatisticsCollector(IConfiguration config, IMessageQueue messageQueue)
+    public class ServerStatisticsCollector(IConfiguration config, IMessageQueue messageQueue) : IServerStatisticsCollector
     {
         private readonly int _samplingIntervalSeconds = config.GetValue<int>("ServerStatisticsConfig:SamplingIntervalSeconds");
         private readonly string _serverIdentifier = config["ServerStatisticsConfig:ServerIdentifier"];
