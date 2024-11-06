@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using ServerMonitoringAndNotificationSystem.ServerStatistics;
 
-public class SignalRNotifier(string signalRUrl)
+public class SignalRNotifier(string signalRUrl) : ISignalRNotifier
 {
     private readonly HubConnection _connection = new HubConnectionBuilder()
             .WithUrl(signalRUrl)
