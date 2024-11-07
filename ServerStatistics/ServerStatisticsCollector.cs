@@ -4,11 +4,11 @@ using System.Diagnostics;
 
 namespace ServerMonitoringAndNotificationSystem.ServerStatistics
 {
-    public class ServerStatisticsCollector(IConfiguration config, IMessageQueue messageQueue) : IServerStatisticsCollector
+    public class ServerStatisticsCollector(IConfiguration config, IMessagePublisher messageQueue) : IServerStatisticsCollector
     {
         private readonly int _samplingIntervalSeconds = config.GetValue<int>("ServerStatisticsConfig:SamplingIntervalSeconds");
         private readonly string _serverIdentifier = config["ServerStatisticsConfig:ServerIdentifier"];
-        private readonly IMessageQueue _messageQueue = messageQueue;
+        private readonly IMessagePublisher _messageQueue = messageQueue;
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
@@ -26,7 +26,7 @@ namespace ServerMonitoringAndNotificationSystem.ServerStatistics
                 };
 
                 string topic = $"ServerStatistics.{_serverIdentifier}";
-                await _messageQueue.PublishAsync(topic, stats);
+                _messageQueue.Publish(topic, stats);
 
                 await Task.Delay(_samplingIntervalSeconds * 1000, cancellationToken);
             }
