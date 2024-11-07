@@ -2,6 +2,6 @@
 
 public interface IMongoDbService
 {
-    Task<ServerStatistics> GetLastStatisticsAsync(string serverIdentifier);
+    Task<ServerStatistics> GetPreviousStatisticsAsync(string serverIdentifier);
     Task SaveStatisticsAsync(ServerStatistics stats);
 }
