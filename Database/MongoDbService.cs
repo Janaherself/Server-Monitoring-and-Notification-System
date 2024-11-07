@@ -17,7 +17,7 @@ public class MongoDbService : IMongoDbService
         await _statisticsCollection.InsertOneAsync(stats);
     }
 
-    public async Task<ServerStatistics> GetLastStatisticsAsync(string serverIdentifier)
+    public async Task<ServerStatistics> GetPreviousStatisticsAsync(string serverIdentifier)
     {
         var filter = Builders<ServerStatistics>.Filter.Eq(s => s.ServerIdentifier, serverIdentifier);
         return await _statisticsCollection.Find(filter).SortByDescending(s => s.Timestamp).FirstOrDefaultAsync();
