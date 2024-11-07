@@ -1,43 +1,51 @@
-﻿using System.Text;
+﻿using System.Data.Common;
+using System.Text;
 using System.Text.Json;
+using System.Threading.Channels;
 using MongoDB.Bson.IO;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using ServerMonitoringAndNotificationSystem.ServerStatistics;
 
-public class RabbitMQCunsumer : IRabbitMQCunsumer
+public class RabbitMQConsumer : IMessageConsumer, IDisposable
 {
-    public void SubscribeToServerStatistics()
-    {
-        var factory = new ConnectionFactory { HostName = "localhost" };
-        var connection = factory.CreateConnection();
-        var channel = connection.CreateModel();
+    private readonly IConnection _connection;
+    private readonly IModel _channel;
 
-        channel.QueueDeclare(queue: "ServerStatistics",
+    public RabbitMQConsumer(string hostName)
+    {
+        var factory = new ConnectionFactory { HostName = hostName };
+        _connection = factory.CreateConnection();
+        _channel = _connection.CreateModel();
+    }
+
+    public void Subscribe(string queueName, Action<string> onMessageReceived)
+    {
+        _channel.QueueDeclare(queue: queueName,
                     durable: false,
                     exclusive: false,
                     autoDelete: false,
                     arguments: null);
 
-        var consumer = new EventingBasicConsumer(channel);
-        consumer.Received += (model, args) =>
+        var consumer = new EventingBasicConsumer(_channel);
+        consumer.Received += (model, ea) =>
         {
-            var body = args.Body.ToArray();
+            var body = ea.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
             var stats = JsonSerializer.Deserialize<ServerStatistics>(message);
-            Console.WriteLine($"Message received: \n" +
-                $"{stats}");
+            onMessageReceived(message);
+
+            Console.WriteLine($"Message received: \n{stats}");
         };
 
-        channel.BasicConsume(queue: "ServerStatistics",
+        _channel.BasicConsume(queue: "ServerStatistics",
                     autoAck: true,
                     consumer: consumer);
-
-        Console.ReadKey();
     }
 
-    public async Task OnMessageReceived(ServerStatistics stats)
+    public void Dispose()
     {
-        throw new NotImplementedException();
+        _channel?.Close();
+        _connection?.Close();
     }
 }
