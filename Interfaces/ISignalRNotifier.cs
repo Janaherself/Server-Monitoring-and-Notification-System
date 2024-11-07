@@ -2,6 +2,6 @@
 
 public interface ISignalRNotifier
 {
-    Task SendAnomalyAlertAsync(ServerStatistics stats);
-    Task SendHighUsageAlertAsync(ServerStatistics stats);
+    Task SendAnomalyAlertAsync(string message, ServerStatistics stats);
+    Task SendHighUsageAlertAsync(string message, ServerStatistics stats);
 }
